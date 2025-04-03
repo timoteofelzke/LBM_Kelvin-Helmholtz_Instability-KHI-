@@ -1,0 +1,9 @@
+.
+lbmbase
+lbmbase/boundary
+lbmbase/collision
+lbmbase/force
+lbmbase/lattice
+lbmbase/streaming
+lbmbase/vtkio
+problems
