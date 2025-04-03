@@ -24,7 +24,7 @@ stParameters readDataINI( std::string filename)
 	ptree pt;
 	read_ini(filename.c_str(),pt);
 
-	prm.tau =  pt.get<double>("General.tau");
+//	prm.tau =  pt.get<double>("General.tau");
 	prm.numberOfSteps = pt.get<int>("General.number_of_steps");
 	prm.initialRho = pt.get("General.initial_density",1.f);
 	prm.geoFiletype = pt.get<string>("Geometry.filetype");

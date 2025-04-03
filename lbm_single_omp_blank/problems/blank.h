@@ -31,11 +31,10 @@ namespace blankProblem
 		
 struct stProblem
 {
-	// std::string filename;
-	double tau;
-    double initial_density;
-    int steps;
-    int size_x, size_y;
+    double U0; 
+    double lbd;
+    double eps;
+	std::string filename;
 };
 
 /**

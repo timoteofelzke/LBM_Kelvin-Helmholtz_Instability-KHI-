@@ -44,14 +44,14 @@ int main(int argc, char** argv)
 	stParameters prm = readDataINI(opt.filename);
 	stGeometry geo = readGeometry( prm.geoFilename, prm.geoFiletype, prm.geoSizeX, prm.geoSizeY, prm.geoSizeZ );
 	stProblem bfs = problemParameters(opt.filename);
-        stForce force = setConstantForce(prm.accX,prm.accY,prm.accZ);
-        stCollision col = collisionParameters(opt.filename);
+	stForce force = setConstantForce(prm.accX,prm.accY,prm.accZ);
+	stCollision col = collisionParameters(opt.filename);
 
     /* Print parameters and options */
 	reportOptions(opt);
 	reportParameters( prm );
 	reportGeometry(geo);
-        reportCollision(col);
+	reportCollision(col);
 
     /* Create an tStreaming with information necessary for the
      * streaming step, for more information see streaming.h  */
@@ -107,10 +107,10 @@ int main(int argc, char** argv)
 
 		boundaryTimer.stop();
 		collisionTimer.resume();
-	        collisionSwap(ini_N, force, col , geo.numberOfPoints);
+		collisionSwap(ini_N, force, col , geo.numberOfPoints);
 		collisionTimer.stop();
 
-        	problemPosCollision(ini_N,col,geo,prm,bfs,force,step);
+		problemPosCollision(ini_N,col,geo,prm,bfs,force,step);
 
 		streamingTimer.resume();
 		streaming(swapBuffer,ini_N);
@@ -120,7 +120,7 @@ int main(int argc, char** argv)
 		{
 	            cout << right << setw(12) << (step+1) << flush << " ";
         	    if ( (step+1)%500 == 0) cout << endl << setw(6) << " ";
-                    divergeCheck(ini_N,geo);
+				divergeCheck(ini_N,geo);
 		}
 
 		double elapsedTime = static_cast<double>( simulationTimer.elapsed().wall ) *1E-9;
