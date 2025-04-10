@@ -74,51 +74,62 @@ void equilibriumDistribution (double vx,double vy,double vz,double rho,double* f
 */
 void equilibriumDistribution (double vx, double vy, double vz, double rho, double* feq)
 {
-    double vx2 = vx * vx;
-    double vy2 = vy * vy;
-    double vz2 = vz * vz;
-    double usq = 1.5 * (vx2 + vy2 + vz2);  // |u|^2 * 3/2
+		#define lbfloat double
+		lbfloat a2vx = 3.0 * vx;
+		lbfloat a2vy = 3.0 * vy;
+		lbfloat a2vz = 3.0 * vz;
 
-    feq[0] = w0 * rho * (1.0 - usq);
+		lbfloat vx2 = vx*vx;
+		lbfloat vy2 = vy*vy;
+		lbfloat vz2 = vz*vz;
 
-    feq[1] = w1 * rho * (1.0 + 3.0 * vx + 4.5 * vx2 - usq);
-    feq[2] = w1 * rho * (1.0 - 3.0 * vx + 4.5 * vx2 - usq);
+		lbfloat rho1 = rho*w1;
+		lbfloat rho2 = rho*w2;
 
-    feq[3] = w1 * rho * (1.0 + 3.0 * vy + 4.5 * vy2 - usq);
-    feq[4] = w1 * rho * (1.0 - 3.0 * vy + 4.5 * vy2 - usq);
+		feq[0] = ( 1.0 - 1.5 * ( vx2 + vy2 + vz2 ) );
+		feq[1] = feq[0] + 4.5 * vx2;
+		feq[2] = rho1 * (feq[1] - a2vx);
+		feq[1] = rho1 * (feq[1] + a2vx);
 
-    feq[5] = w1 * rho * (1.0 + 3.0 * vz + 4.5 * vz2 - usq);
-    feq[6] = w1 * rho * (1.0 - 3.0 * vz + 4.5 * vz2 - usq);
+		feq[3] = feq[0] + 4.5 * vy2;
+		feq[4] = rho1 * (feq[3] - a2vy);
+		feq[3] = rho1 * (feq[3] + a2vy);
 
-    double vxvy = 3.0 * (vx + vy);
-    double vxvy2 = 4.5 * (vx + vy) * (vx + vy);
-    feq[7]  = w2 * rho * (1.0 + vxvy + vxvy2 - usq);
-    feq[8]  = w2 * rho * (1.0 - vxvy + vxvy2 - usq);
+		feq[5] = feq[0] + 4.5 * vz2;
+		feq[6] = rho1 * (feq[5] - a2vz);
+		feq[5] = rho1 * (feq[5] + a2vz);
 
-    double vxmvy = 3.0 * (vx - vy);
-    double vxmvy2 = 4.5 * (vx - vy) * (vx - vy);
-    feq[9]  = w2 * rho * (1.0 + vxmvy + vxmvy2 - usq);
-    feq[10] = w2 * rho * (1.0 - vxmvy + vxmvy2 - usq);
+		lbfloat cv = (a2vx + a2vy);
+		feq[ 7] = feq[ 0] + 0.5*cv*cv;
+		feq[ 8] = rho2 * (feq[ 7] - cv);
+		feq[ 7] = rho2 * (feq[ 7] + cv);
 
-    double vxvz = 3.0 * (vx + vz);
-    double vxvz2 = 4.5 * (vx + vz) * (vx + vz);
-    feq[11] = w2 * rho * (1.0 + vxvz + vxvz2 - usq);
-    feq[12] = w2 * rho * (1.0 - vxvz + vxvz2 - usq);
+		cv = (a2vx - a2vy);
+		feq[ 9]  = feq[ 0] + 0.5*cv*cv;
+		feq[10] = rho2 * (feq[ 9] - cv);
+		feq[ 9] = rho2 * (feq[ 9] + cv);
 
-    double vxmvz = 3.0 * (vx - vz);
-    double vxmvz2 = 4.5 * (vx - vz) * (vx - vz);
-    feq[13] = w2 * rho * (1.0 + vxmvz + vxmvz2 - usq);
-    feq[14] = w2 * rho * (1.0 - vxmvz + vxmvz2 - usq);
+		cv = (a2vx + a2vz);
+		feq[11] = feq[ 0] + 0.5*cv*cv;
+		feq[12] = rho2 * (feq[11] - cv);
+		feq[11] = rho2 * (feq[11] + cv);
 
-    double vymvz = 3.0 * (vy - vz);
-    double vymvz2 = 4.5 * (vy - vz) * (vy - vz);
-    feq[15] = w2 * rho * (1.0 + vymvz + vymvz2 - usq);
-    feq[16] = w2 * rho * (1.0 - vymvz + vymvz2 - usq);
+		cv = (a2vx - a2vz);
+		feq[13] = (feq[0] + 0.5*cv*cv);
+		feq[14] = rho2* (feq[13] - cv);
+		feq[13] = rho2* (feq[13] + cv);
 
-    double vyvz = 3.0 * (vy + vz);
-    double vyvz2 = 4.5 * (vy + vz) * (vy + vz);
-    feq[17] = w2 * rho * (1.0 + vyvz + vyvz2 - usq);
-    feq[18] = w2 * rho * (1.0 - vyvz + vyvz2 - usq);
+		cv = (-a2vy - a2vz);
+		feq[15] = feq[ 0] + 0.5*cv*cv;
+		feq[16] = rho2 * (feq[15] - cv);
+		feq[15] = rho2 * (feq[15] + cv);
+
+		cv = (-a2vy + a2vz);
+		feq[17] = feq[ 0] + 0.5*cv*cv;
+		feq[18] = rho2 * (feq[17] - cv);
+		feq[17] = rho2 * (feq[17] + cv);
+
+		feq[0] = w0 *rho * feq[0];
 }
 
 void equilibriumDistributionSym( double vx, double vy, double vz, double rho, double* feq)
